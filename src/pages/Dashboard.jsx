@@ -269,8 +269,8 @@ export default function Dashboard() {
 
       {/* Details Modal */}
       {selectedMovie && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm transition duration-300 fade-in">
-          <div className="w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/90 backdrop-blur-sm transition duration-300 fade-in">
+          <div className="w-full max-w-2xl max-h-[92vh] bg-slate-900 border border-slate-800 rounded-2xl overflow-y-auto shadow-2xl relative flex flex-col">
             <button 
               onClick={handleCloseModal}
               className="absolute top-4 right-4 z-10 w-9 h-9 bg-slate-950/50 hover:bg-slate-950 text-slate-400 hover:text-white rounded-full flex items-center justify-center border border-slate-800/80 transition"
@@ -285,37 +285,37 @@ export default function Dashboard() {
               </div>
             ) : (
               <div className="flex flex-col md:flex-row">
-                <div className="w-full md:w-2/5 aspect-[2/3] md:aspect-auto md:h-[430px] bg-slate-950 relative">
+                <div className="w-full md:w-2/5 h-48 sm:h-56 md:h-auto md:min-h-[430px] bg-slate-950 relative overflow-hidden flex-shrink-0">
                   <img 
                     src={getAuthenticatedMediaUrl(movieDetails.poster_path)} 
                     alt={movieDetails.title}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-black/45 flex items-center justify-center">
                     <button
                       onClick={() => handlePlayMovie(movieDetails.id, 0, selectedSubId)}
-                      className="w-16 h-16 bg-brand-500 hover:bg-brand-600 rounded-full flex items-center justify-center text-white shadow-glow-brand transform hover:scale-110 active:scale-95 transition"
+                      className="w-14 h-14 md:w-16 md:h-16 bg-brand-500 hover:bg-brand-600 rounded-full flex items-center justify-center text-white shadow-glow-brand transform hover:scale-105 active:scale-95 transition"
                     >
-                      <Play className="w-6 h-6 fill-white ml-1" />
+                      <Play className="w-5 h-5 md:w-6 md:h-6 fill-white ml-0.5 md:ml-1" />
                     </button>
                   </div>
                 </div>
 
-                <div className="w-full md:w-3/5 p-6 flex flex-col justify-between space-y-6">
+                <div className="w-full md:w-3/5 p-4 sm:p-6 flex flex-col justify-between space-y-5">
                   <div className="space-y-4">
                     <div>
-                      <h2 className="text-xl font-black text-white leading-tight">{movieDetails.title}</h2>
-                      <span className="text-[10px] text-brand-400 font-extrabold uppercase tracking-widest bg-brand-500/10 px-2 py-0.5 rounded">DYNAMIC MOUNT</span>
+                      <h2 className="text-lg sm:text-xl font-black text-white leading-tight pr-8">{movieDetails.title}</h2>
+                      <span className="text-[9px] text-brand-400 font-extrabold uppercase tracking-widest bg-brand-500/10 px-2 py-0.5 rounded">DYNAMIC MOUNT</span>
                     </div>
 
-                    <div className="flex flex-wrap gap-2">
-                      <span className="text-[10px] bg-slate-800 border border-slate-700/50 text-slate-300 px-2 py-0.5 rounded font-semibold uppercase">{movieDetails.container}</span>
-                      <span className="text-[10px] bg-slate-800 border border-slate-700/50 text-slate-300 px-2 py-0.5 rounded font-semibold">{movieDetails.resolution}</span>
-                      <span className="text-[10px] bg-slate-800 border border-slate-700/50 text-slate-300 px-2 py-0.5 rounded font-semibold">{formatDuration(movieDetails.duration)}</span>
-                      <span className="text-[10px] bg-slate-800 border border-slate-700/50 text-slate-300 px-2 py-0.5 rounded font-semibold">{formatBytes(movieDetails.file_size)}</span>
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                      <span className="text-[9px] sm:text-[10px] bg-slate-800 border border-slate-700/50 text-slate-300 px-2 py-0.5 rounded font-semibold uppercase">{movieDetails.container}</span>
+                      <span className="text-[9px] sm:text-[10px] bg-slate-800 border border-slate-700/50 text-slate-300 px-2 py-0.5 rounded font-semibold">{movieDetails.resolution}</span>
+                      <span className="text-[9px] sm:text-[10px] bg-slate-800 border border-slate-700/50 text-slate-300 px-2 py-0.5 rounded font-semibold">{formatDuration(movieDetails.duration)}</span>
+                      <span className="text-[9px] sm:text-[10px] bg-slate-800 border border-slate-700/50 text-slate-300 px-2 py-0.5 rounded font-semibold">{formatBytes(movieDetails.file_size)}</span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs border-t border-slate-800 pt-4 text-slate-400">
+                    <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 text-[11px] sm:text-xs border-t border-slate-800 pt-3 text-slate-400">
                       <div>
                         Video Codec: <span className="font-semibold text-slate-200 uppercase">{movieDetails.video_codec}</span>
                       </div>
@@ -331,13 +331,13 @@ export default function Dashboard() {
                     </div>
 
                     {/* Subtitle list */}
-                    <div className="border-t border-slate-800 pt-4 space-y-2">
-                      <label className="block text-slate-300 text-xs font-semibold">Subtitles Track</label>
+                    <div className="border-t border-slate-800 pt-3 space-y-1.5">
+                      <label className="block text-slate-300 text-[11px] sm:text-xs font-semibold">Subtitles Track</label>
                       {movieDetails.subtitles && movieDetails.subtitles.length > 0 ? (
                         <select
                           value={selectedSubId}
                           onChange={(e) => setSelectedSubId(e.target.value)}
-                          className="w-full text-xs px-3 py-2 rounded-lg glass-input"
+                          className="w-full text-xs px-3 py-2.5 rounded-lg glass-input cursor-pointer"
                         >
                           <option value="">No subtitles (Direct Stream)</option>
                           {movieDetails.subtitles.map(sub => (
@@ -358,7 +358,7 @@ export default function Dashboard() {
                     <div className="flex gap-3">
                       <button
                         onClick={() => handlePlayMovie(movieDetails.id, 0, selectedSubId)}
-                        className="flex-1 py-3 bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white font-bold rounded-xl transition text-sm flex items-center justify-center space-x-2 shadow-glow-brand"
+                        className="flex-1 py-3 sm:py-3.5 bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white font-bold rounded-xl transition text-sm flex items-center justify-center space-x-2 shadow-glow-brand"
                       >
                         <Play className="w-4 h-4 fill-white" />
                         <span>Play Movie</span>

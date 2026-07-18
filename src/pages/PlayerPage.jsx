@@ -411,21 +411,21 @@ export default function PlayerPage() {
 
           {/* Action buttons */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-5">
-              <button onClick={togglePlay} className="text-slate-300 hover:text-white transition">
-                {isPlaying ? <Pause className="w-5 h-5 fill-white" /> : <Play className="w-5 h-5 fill-white" />}
+            <div className="flex items-center space-x-6 sm:space-x-5">
+              <button onClick={togglePlay} className="text-slate-300 hover:text-white transition p-1">
+                {isPlaying ? <Pause className="w-6 h-6 sm:w-5 sm:h-5 fill-white" /> : <Play className="w-6 h-6 sm:w-5 sm:h-5 fill-white" />}
               </button>
 
-              <button onClick={() => handleSkip(-10)} className="text-slate-400 hover:text-white transition">
-                <RotateCcw className="w-4 h-4" />
+              <button onClick={() => handleSkip(-10)} className="text-slate-400 hover:text-white transition p-1">
+                <RotateCcw className="w-5.5 h-5.5 sm:w-4 sm:h-4" />
               </button>
-              <button onClick={() => handleSkip(10)} className="text-slate-400 hover:text-white transition">
-                <FastForward className="w-4 h-4" />
+              <button onClick={() => handleSkip(10)} className="text-slate-400 hover:text-white transition p-1">
+                <FastForward className="w-5.5 h-5.5 sm:w-4 sm:h-4" />
               </button>
 
               <div className="flex items-center space-x-2 group/volume">
-                <button onClick={toggleMute} className="text-slate-400 hover:text-white transition">
-                  {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                <button onClick={toggleMute} className="text-slate-400 hover:text-white transition p-1">
+                  {isMuted ? <VolumeX className="w-5.5 h-5.5 sm:w-4 sm:h-4" /> : <Volume2 className="w-5.5 h-5.5 sm:w-4 sm:h-4" />}
                 </button>
                 <input
                   type="range"
@@ -434,7 +434,7 @@ export default function PlayerPage() {
                   step={0.05}
                   value={isMuted ? 0 : volume}
                   onChange={handleVolumeChange}
-                  className="w-0 group-hover/volume:w-20 transition-all duration-300 h-1 bg-slate-800 rounded-full appearance-none cursor-pointer accent-white"
+                  className="w-0 group-hover/volume:w-20 transition-all duration-300 h-1 bg-slate-800 rounded-full appearance-none cursor-pointer accent-white hidden sm:block"
                 />
               </div>
             </div>
@@ -466,8 +466,8 @@ export default function PlayerPage() {
                 )}
               </div>
 
-              <button onClick={toggleFullscreen} className="text-slate-400 hover:text-white transition">
-                {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+              <button onClick={toggleFullscreen} className="text-slate-400 hover:text-white transition p-1">
+                {isFullscreen ? <Minimize className="w-5.5 h-5.5 sm:w-4 sm:h-4" /> : <Maximize className="w-5.5 h-5.5 sm:w-4 sm:h-4" />}
               </button>
             </div>
           </div>
