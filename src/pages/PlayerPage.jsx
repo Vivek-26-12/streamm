@@ -75,7 +75,7 @@ export default function PlayerPage() {
     }
   }, [movie]);
 
-  // Load stream source
+  // Load stream source initially
   useEffect(() => {
     if (!movie || !videoRef.current) return;
     
@@ -84,11 +84,7 @@ export default function PlayerPage() {
     
     videoRef.current.src = getStreamUrl(streamOffset);
     videoRef.current.load();
-    
-    if (isPlaying) {
-      videoRef.current.play().catch(e => console.log('Auto-play blocked or aborted:', e.message));
-    }
-  }, [movie, streamOffset]);
+  }, [movie]);
 
   // 3. Local progress tracking sync every 5 seconds
   useEffect(() => {
@@ -225,7 +221,17 @@ export default function PlayerPage() {
       setIsLoading(true);
       setStreamOffset(absoluteTime);
       setCurrentTime(absoluteTime);
-      videoRef.current.currentTime = 0;
+      
+      // Load and play synchronously to bypass iOS Safari autoplay blocking
+      const newUrl = getStreamUrl(absoluteTime);
+      videoRef.current.src = newUrl;
+      videoRef.current.load();
+      videoRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch(e => {
+          console.log('Synchronous play blocked, fallback to play state:', e.message);
+          setIsPlaying(false);
+        });
     }
   };
 
