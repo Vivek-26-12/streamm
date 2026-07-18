@@ -340,6 +340,7 @@ export default function PlayerPage() {
         className="w-full h-full max-h-screen max-w-full"
         onClick={togglePlay}
         playsInline
+        crossOrigin="anonymous"
       >
         {initialSubId && movie && (
           <track
