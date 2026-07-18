@@ -17,6 +17,7 @@ export default function PlayerPage() {
 
   const videoRef = useRef(null);
   const containerRef = useRef(null);
+  const playerSessionIdRef = useRef(Math.random().toString(36).substring(2, 11));
 
   // Player UI State
   const [isPlaying, setIsPlaying] = useState(false);
@@ -52,7 +53,8 @@ export default function PlayerPage() {
       start: offset.toString(),
       browser_video: videoCapabilities.join(','),
       browser_audio: 'aac,mp3',
-      browser_containers: 'mp4'
+      browser_containers: 'mp4',
+      sessionId: playerSessionIdRef.current
     });
 
     return getAuthenticatedMediaUrl(`${baseStreamPath}?${params.toString()}`);
@@ -62,13 +64,14 @@ export default function PlayerPage() {
   useEffect(() => {
     if (!movie) return;
 
-    const hasH264 = movie.video_codec === 'h264';
+    const supportsHEVC = document.createElement('video').canPlayType('video/mp4; codecs="hvc1"') !== '';
+    const isSupportedVideoCodec = movie.video_codec === 'h264' || (movie.video_codec === 'hevc' && supportsHEVC);
     const hasAAC = ['aac', 'mp3'].includes(movie.audio_codec);
     const hasMP4 = movie.container.includes('mp4');
 
-    if (hasH264 && hasAAC && hasMP4) {
+    if (isSupportedVideoCodec && hasAAC && hasMP4) {
       setPlayMode('direct');
-    } else if (hasH264 && hasAAC) {
+    } else if (isSupportedVideoCodec && hasAAC) {
       setPlayMode('remux');
     } else {
       setPlayMode('transcode');
