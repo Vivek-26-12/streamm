@@ -1,14 +1,23 @@
 import axios from 'axios';
 
-// Fallback to local port if environment variable is not defined
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+// Function to resolve backend API base URL dynamically (prioritizes localStorage)
+export const getApiBaseUrl = () => {
+  let url = localStorage.getItem('custom_api_url') || import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  // Strip trailing slashes
+  if (url.endsWith('/')) {
+    url = url.slice(0, -1);
+  }
+  return url;
+};
 
-const client = axios.create({
-  baseURL: `${API_BASE_URL}/api`,
-});
+// Deprecated static export for backwards compatibility
+export const API_BASE_URL = getApiBaseUrl();
 
-// Interceptor to inject JWT token in headers
+const client = axios.create();
+
+// Interceptor to inject dynamic baseURL and JWT token
 client.interceptors.request.use((config) => {
+  config.baseURL = `${getApiBaseUrl()}/api`;
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -35,7 +44,7 @@ export const mediaApi = {
 // Helper for generating auth-signed streaming/poster URLs (for html5 tags)
 export const getAuthenticatedMediaUrl = (endpoint) => {
   const token = localStorage.getItem('token');
-  const url = `${API_BASE_URL}${endpoint}`;
+  const url = `${getApiBaseUrl()}${endpoint}`;
   if (!token) return url;
   
   // Use appropriate query separator

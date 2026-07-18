@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext.jsx';
-import { Play, Film } from 'lucide-react';
+import { Play, Film, Settings } from 'lucide-react';
 
 export default function Login() {
   const { login } = useAuth();
@@ -8,6 +8,10 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Server settings configuration states
+  const [showSettings, setShowSettings] = useState(false);
+  const [apiUrl, setApiUrl] = useState(localStorage.getItem('custom_api_url') || import.meta.env.VITE_API_URL || 'http://localhost:5000');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,11 +31,32 @@ export default function Login() {
     }
   };
 
+  const handleSaveSettings = (e) => {
+    e.preventDefault();
+    const cleanUrl = apiUrl.trim();
+    if (!cleanUrl) {
+      localStorage.removeItem('custom_api_url');
+    } else {
+      localStorage.setItem('custom_api_url', cleanUrl);
+    }
+    setShowSettings(false);
+    window.location.reload(); // Reload to apply the new API base URL
+  };
+
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-dark-950 px-4 overflow-hidden">
       {/* Background blobs for premium depth */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-brand-600/10 blur-3xl" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-indigo-500/10 blur-3xl" />
+
+      {/* Settings Gear Button */}
+      <button 
+        onClick={() => setShowSettings(true)}
+        className="absolute top-4 right-4 p-3 rounded-full text-slate-400 hover:text-white transition duration-200 bg-slate-900/60 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 z-20 shadow-lg"
+        title="Server Settings"
+      >
+        <Settings className="w-5 h-5 animate-hover-spin" />
+      </button>
 
       <div className="w-full max-w-md glass-panel p-8 rounded-2xl shadow-2xl relative z-10 fade-in border border-slate-800">
         <div className="flex flex-col items-center mb-8">
@@ -107,6 +132,51 @@ export default function Login() {
           </button>
         </form>
       </div>
+
+      {/* Settings Modal */}
+      {showSettings && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
+          <div className="w-full max-w-md bg-dark-900 border border-slate-800 p-6 rounded-2xl shadow-2xl relative">
+            <h2 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
+              <Settings className="w-5 h-5 text-brand-500" />
+              Server Connection
+            </h2>
+            <p className="text-slate-400 text-xs mb-6 leading-relaxed">
+              If your PC server is running behind a Cloudflare Tunnel or using a dynamic address, paste your active URL below.
+            </p>
+            <form onSubmit={handleSaveSettings} className="space-y-4">
+              <div>
+                <label className="block text-slate-300 text-sm font-semibold mb-2">
+                  Server URL / Address
+                </label>
+                <input
+                  type="text"
+                  placeholder="https://xxxxx.trycloudflare.com"
+                  className="w-full px-4 py-3 rounded-lg glass-input text-sm text-white"
+                  value={apiUrl}
+                  onChange={(e) => setApiUrl(e.target.value)}
+                  autoFocus
+                />
+              </div>
+              <div className="flex gap-3 justify-end mt-8">
+                <button
+                  type="button"
+                  onClick={() => setShowSettings(false)}
+                  className="px-4 py-2 border border-slate-800 hover:bg-slate-800 text-slate-300 rounded-lg text-sm transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white font-semibold rounded-lg text-sm transition shadow-glow-brand"
+                >
+                  Save Address
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
