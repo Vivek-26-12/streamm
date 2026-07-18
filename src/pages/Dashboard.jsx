@@ -23,6 +23,9 @@ export default function Dashboard() {
   const [continueList, setContinueList] = useState([]);
 
   useEffect(() => {
+    try {
+      localStorage.removeItem('streamm_progress');
+    } catch (_) {}
     setContinueList([]);
   }, [selectedMovie]);
 
