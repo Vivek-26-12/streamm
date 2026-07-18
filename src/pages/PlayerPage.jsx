@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { mediaApi, getAuthenticatedMediaUrl } from '../api/client.js';
 import { 
   Play, Pause, Volume2, VolumeX, Maximize, Minimize, 
-  ChevronLeft, RotateCcw, FastForward, Settings, Loader2, Info
+  ChevronLeft, RotateCcw, FastForward, Settings, Loader2, Info, X
 } from 'lucide-react';
 
 export default function PlayerPage() {
@@ -368,7 +368,14 @@ export default function PlayerPage() {
 
       {/* Error Banner */}
       {errorMsg && (
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 z-30 glass-panel border-red-500/30 p-5 rounded-2xl flex flex-col items-center max-w-md text-center text-red-400">
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 z-30 glass-panel border-red-500/30 p-5 rounded-2xl flex flex-col items-center max-w-md text-center text-red-400 relative">
+          <button 
+            onClick={() => setErrorMsg('')}
+            className="absolute top-3 right-3 text-slate-400 hover:text-white transition"
+            title="Dismiss error"
+          >
+            <X className="w-4 h-4" />
+          </button>
           <Info className="w-8 h-8 text-red-500 mb-2" />
           <p className="font-semibold">{errorMsg}</p>
           <button 
