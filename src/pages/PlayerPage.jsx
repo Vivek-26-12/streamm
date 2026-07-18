@@ -89,51 +89,8 @@ export default function PlayerPage() {
     videoRef.current.load();
   }, [movie]);
 
-  // 3. Local progress tracking sync every 5 seconds
-  useEffect(() => {
-    if (!isPlaying || !movie) return;
-
-    const interval = setInterval(() => {
-      if (!videoRef.current) return;
-      const absoluteCurrentTime = streamOffset + videoRef.current.currentTime;
-      saveLocalProgress(absoluteCurrentTime);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [isPlaying, streamOffset, movie, id]);
-
-  // Save final progress on unmount/exit
-  useEffect(() => {
-    return () => {
-      if (videoRef.current && movie) {
-        const absoluteCurrentTime = streamOffset + videoRef.current.currentTime;
-        saveLocalProgress(absoluteCurrentTime);
-      }
-    };
-  }, [id, movie, streamOffset]);
-
-  const saveLocalProgress = (position) => {
-    if (!movie) return;
-    try {
-      const progressData = JSON.parse(localStorage.getItem('streamm_progress') || '{}');
-      const completion = (position / movie.duration) * 100;
-      
-      progressData[id] = {
-        id,
-        title: movie.title,
-        container: movie.container,
-        resolution: movie.resolution,
-        position,
-        duration: movie.duration,
-        completion_percentage: completion,
-        last_watched: new Date().toISOString()
-      };
-
-      localStorage.setItem('streamm_progress', JSON.stringify(progressData));
-    } catch (e) {
-      console.error('Failed to save progress locally:', e);
-    }
-  };
+  // 3. Playback progress tracking disabled per user preference
+  const saveLocalProgress = (position) => {};
 
   // Controls overlay auto-fade
   useEffect(() => {

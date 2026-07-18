@@ -19,25 +19,12 @@ export default function Dashboard() {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [selectedSubId, setSelectedSubId] = useState('');
 
-  // Local storage continue watching progress list
+  // Local storage continue watching progress list (Disabled per user preference)
   const [continueList, setContinueList] = useState([]);
 
-  // Load progress records from localStorage on mount
   useEffect(() => {
-    const loadLocalHistory = () => {
-      try {
-        const progressData = JSON.parse(localStorage.getItem('streamm_progress') || '{}');
-        const list = Object.values(progressData)
-          .filter(item => item.completion_percentage < 90 && item.position > 10)
-          .sort((a, b) => new Date(b.last_watched) - new Date(a.last_watched))
-          .slice(0, 10);
-        setContinueList(list);
-      } catch (e) {
-        console.error('Failed to parse local watch history:', e);
-      }
-    };
-    loadLocalHistory();
-  }, [selectedMovie]); // reload when modal closes/plays
+    setContinueList([]);
+  }, [selectedMovie]);
 
   // 1. Query dynamic files list
   const { data: movies = [], isLoading: loadingMovies, refetch } = useQuery({
@@ -57,10 +44,8 @@ export default function Dashboard() {
       const res = await mediaApi.getMovie(movie.id);
       setMovieDetails(res.data);
       
-      // Load local progress for this specific movie
-      const progressData = JSON.parse(localStorage.getItem('streamm_progress') || '{}');
-      const localProgress = progressData[movie.id] || null;
-      setMovieProgress(localProgress);
+      // Progress tracking disabled
+      setMovieProgress(null);
 
       // Auto select first subtitle track if available
       if (res.data.subtitles && res.data.subtitles.length > 0) {
@@ -308,7 +293,7 @@ export default function Dashboard() {
                   />
                   <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                     <button
-                      onClick={() => handlePlayMovie(movieDetails.id, movieProgress?.position || 0, selectedSubId)}
+                      onClick={() => handlePlayMovie(movieDetails.id, 0, selectedSubId)}
                       className="w-16 h-16 bg-brand-500 hover:bg-brand-600 rounded-full flex items-center justify-center text-white shadow-glow-brand transform hover:scale-110 active:scale-95 transition"
                     >
                       <Play className="w-6 h-6 fill-white ml-1" />
@@ -370,33 +355,13 @@ export default function Dashboard() {
                   </div>
 
                   <div className="space-y-4">
-                    {movieProgress && movieProgress.position > 10 && (
-                      <div className="p-3 bg-slate-950/40 border border-slate-800/50 rounded-xl text-xs flex justify-between items-center text-slate-400">
-                        <div>
-                          Resume watching at <span className="text-brand-300 font-bold">{formatDuration(movieProgress.position)}</span>
-                        </div>
-                        <button
-                          onClick={() => handlePlayMovie(movieDetails.id, movieProgress.position, selectedSubId)}
-                          className="bg-brand-500/10 hover:bg-brand-500/20 text-brand-300 px-3 py-1 rounded-lg font-semibold transition"
-                        >
-                          Resume
-                        </button>
-                      </div>
-                    )}
-
                     <div className="flex gap-3">
                       <button
                         onClick={() => handlePlayMovie(movieDetails.id, 0, selectedSubId)}
-                        className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 active:bg-slate-950 text-white font-bold rounded-xl transition text-sm flex items-center justify-center space-x-2"
-                      >
-                        <span>Start Over</span>
-                      </button>
-                      <button
-                        onClick={() => handlePlayMovie(movieDetails.id, movieProgress?.position || 0, selectedSubId)}
                         className="flex-1 py-3 bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white font-bold rounded-xl transition text-sm flex items-center justify-center space-x-2 shadow-glow-brand"
                       >
                         <Play className="w-4 h-4 fill-white" />
-                        <span>Play File</span>
+                        <span>Play Movie</span>
                       </button>
                     </div>
                   </div>
