@@ -4,7 +4,6 @@ import { Play, Film, Settings } from 'lucide-react';
 
 export default function Login() {
   const { login } = useAuth();
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -15,15 +14,16 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!username || !password) {
-      setError('Please fill in all fields.');
+    if (!password) {
+      setError('Please enter the password.');
       return;
     }
 
     setError('');
     setLoading(true);
     
-    const result = await login(username, password);
+    // Automatically use 'admin' as the username in the backend request
+    const result = await login('admin', password);
     setLoading(false);
     
     if (!result.success) {
@@ -77,29 +77,13 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-slate-300 text-sm font-semibold mb-2" htmlFor="username">
-              Username
-            </label>
-            <input
-              id="username"
-              type="text"
-              className="w-full px-4 py-3 rounded-lg glass-input text-sm"
-              placeholder="Enter administrator username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              disabled={loading}
-              required
-            />
-          </div>
-
-          <div>
             <label className="block text-slate-300 text-sm font-semibold mb-2" htmlFor="password">
-              Password
+              Server Access Password
             </label>
             <input
               id="password"
               type="password"
-              className="w-full px-4 py-3 rounded-lg glass-input text-sm"
+              className="w-full px-4 py-3 rounded-lg glass-input text-sm text-white"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
