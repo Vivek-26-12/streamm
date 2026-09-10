@@ -1,16 +1,38 @@
-# React + Vite
+# Streamm 🎬
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A modern self-hosted media streaming server with an on-the-fly transcoding backend and a sleek React frontend.
 
-Currently, two official plugins are available:
+## Project Structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```text
+Streamm/
+├── frontend/             # React + Vite client web application (Tailwind CSS, HLS video player)
+├── backend/              # Node.js + Express streaming & metadata server
+├── .gitignore            # Git exclusion rules for caches, media, and environment secrets
+└── README.md             # Project documentation
+```
 
-## React Compiler
+## Quick Start
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. Backend Setup
 
-## Expanding the Oxlint configuration
+```bash
+cd backend
+npm install
+cp .env.example .env
+# Update .env with your desired PORT, JWT_SECRET, and media LIBRARY_PATHS
+npm start
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+### 2. Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## Deployment
+
+- **Frontend (Vercel)**: When deploying to Vercel, configure the project's **Root Directory** as `frontend` in your Vercel Project Settings.
+- **Backend**: Can be hosted on your local media server or VPS, exposed securely using Cloudflare Tunnel or reverse proxy.

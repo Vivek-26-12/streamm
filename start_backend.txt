@@ -1,0 +1,12 @@
+# -------------------------------------------------------------
+# COMMANDS TO START THE STREAMM BACKEND SERVER & TUNNEL
+# -------------------------------------------------------------
+
+# COMMAND 1: Free Port 5000 (Run this if you get an "address already in use" error)
+Get-NetTCPConnection -LocalPort 5000 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }
+
+# COMMAND 2: Start the Node.js Backend Server (Run in Terminal Tab 1)
+cd d:\Songs\Pendrive\movies\Streamm\backend && npm start
+
+# COMMAND 3: Start the Cloudflare Tunnel (Run in Terminal Tab 2)
+cd d:\Songs\Pendrive\movies\Streamm && .\cloudflared.exe tunnel --url http://localhost:5000

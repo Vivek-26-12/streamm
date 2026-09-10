@@ -1,47 +1,53 @@
-# Dependency directories
+# Dependencies
 node_modules/
 jspm_packages/
 web_modules/
 
-# Local env files (contain secrets/passwords)
+# Environment variables and secrets
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env.*
+.env*.local
+*.env
+*.env.local
 
-# Backend transcoding & posters cache
-backend/cache/
-backend/database/
-*.db
-*.db-journal
-*.db-wal
+# Executables & Binaries
+*.exe
+cloudflared.exe
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.vercel/
 
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Frontend build outputs
-frontend/dist/
-frontend/out/
-
-# IDEs and editors
-.idea/
+# IDEs and Editors
 .vscode/
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
 
-# OS metadata files
+# Operating System Files
 .DS_Store
 Thumbs.db
 
-# Vercel build folders
-.vercel/
+# Backend media, cache, and database files
+backend/cache/
+backend/database/
+backend/movies/
+backend/mkv movies/
+cache/
+*.db
+*.db-journal
+*.db-wal

@@ -1,0 +1,47 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+web_modules/
+
+# Local env files (contain secrets/passwords)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*
+
+# Backend transcoding & posters cache
+backend/cache/
+backend/database/
+*.db
+*.db-journal
+*.db-wal
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Frontend build outputs
+frontend/dist/
+frontend/out/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS metadata files
+.DS_Store
+Thumbs.db
+
+# Vercel build folders
+.vercel/
